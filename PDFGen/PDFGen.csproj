@@ -46,6 +46,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="PDFClown, Version=0.1.2.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\PDFClown.NET.2.0.0\lib\PDFClown.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SautinSoft.Document, Version=4.0.11.12, Culture=neutral, PublicKeyToken=e759c76c7515592a">
+      <HintPath>..\packages\sautinsoft.document.4.0.11.12\lib\net47\SautinSoft.Document.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -155,14 +163,17 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Controllers\ClownController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ValuesController.cs" />
+    <Compile Include="Controllers\SautinController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\mycert.pfx" />
+    <Content Include="App_Data\template.docx" />
     <Content Include="Areas\HelpPage\HelpPage.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
