@@ -45,6 +45,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="fsdk_dotnet, Version=7.2.0.227, Culture=neutral, PublicKeyToken=89adf39676d92a51">
+      <HintPath>..\lib\x86_vc15\fsdk_dotnet.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="PDFClown, Version=0.1.2.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\packages\PDFClown.NET.2.0.0\lib\PDFClown.dll</HintPath>
@@ -164,6 +167,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\ClownController.cs" />
+    <Compile Include="Controllers\FoxitController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\SautinController.cs" />
     <Compile Include="Global.asax.cs">
@@ -226,7 +230,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
