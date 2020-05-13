@@ -15,19 +15,22 @@ namespace PDFGen.Controllers
             document.Author = "Foxit Software";
             document.Title = "Table Report";
 
-
             //Create a Table and set it's properties
             Table table = new Table(0, 0, 512, 676, Font.Helvetica, 12);
-            table.Border.Width = 1f;
-            table.CellDefault.Border.Width = 1f;
+            table.Border.Width = .5f;
             table.Border.Color = Grayscale.Black;
             table.RepeatColumnHeaderCount = 1;
             table.RepeatRowHeaderCount = 1;
 
+            table.CellDefault.Border.Width = .25f;
+            table.CellDefault.Padding = 0;
+
             // Builds the report
             BuildTable(table);
+
             int currentRow = 0;
             int currentColumn = 0;
+
             do
             {
                 currentRow++;
@@ -43,20 +46,23 @@ namespace PDFGen.Controllers
 
                 table = table.GetOverflowRows();
             } while (table != null);
-            
-            
-            
-            document.DrawToWeb("0875-20200511.pdf");
 
+
+            document.DrawToWeb("0875-20200511.pdf");
         }
-        
-        private void AddTableToPage( Document document, Table table, int currentRow, int currentColumn )
+
+        private void AddTableToPage(Document document, Table table, int currentRow, int currentColumn)
         {
-            Page page = new Page( PageSize.Letter );
-            if( table != null )
-                page.Elements.Add( table );
-            page.Elements.Add( new Label( "(" + currentRow + "," + currentColumn + ")", 0, page.Dimensions.Body.Height - 12, page.Dimensions.Body.Width, 12, Font.Helvetica, 12, TextAlign.Center ) );
-            document.Pages.Add( page );
+            Page page = new Page(PageSize.Legal);
+
+            if (table != null)
+                page.Elements.Add(table);
+
+            //page.Elements.Add(new Label("(" + currentRow + "," + currentColumn + ")", 0,
+            //    page.Dimensions.Body.Height - 12, page.Dimensions.Body.Width, 12, Font.Helvetica, 12,
+            //    TextAlign.Center));
+
+            document.Pages.Add(page);
         }
 
         private void BuildTable(Table table)
@@ -106,18 +112,42 @@ namespace PDFGen.Controllers
 
         private void CreateRow(Table table)
         {
+            Table table1 = new Table(0, 0, 150, 40, Font.Courier, 10);
+
+            var row1 = table1.Rows.Add(40, Font.TimesBold, 12, RgbColor.Black, RgbColor.LightGrey);
+            table1.Columns.Add(75);
+            table1.Columns.Add(75);
+            row1.Cells.Add("Lorem ipsum dolor sit amet, consectetur adipiscing elit.");
+            row1.Cells.Add("Lorem ipsum dolor sit amet, consectetur adipiscing elit.");
+
+
             Row row = table.Rows.Add(20);
+
+            row.CellDefault.VAlign = VAlign.Center;
+
+            row.Cells.Add("Lorem ipsum dolor sit amet, consectetur adipiscing elit.");
+            row.Cells.Add(
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.");
+            row.Cells.Add("Lorem ipsum dolor sit amet, consectetur adipiscing elit.");
+
+
+            row.Cells.Add(table1);
+            row.Cells[3].BackgroundColor = new WebColor("#000000");
+            row.Cells[3].Align = TextAlign.Center;
+            //row.Cells[3].Border = new Border();
+
+
+            row.Cells.Add("Lorem ipsum dolor sit amet, consectetur adipiscing elit.");
+            row.Cells.Add("Lorem ipsum dolor sit amet, consectetur adipiscing elit.");
+            row.Cells.Add(
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.");
             row.Cells.Add("Lorem ipsum dolor sit amet, consectetur adipiscing elit.");
             row.Cells.Add("Lorem ipsum dolor sit amet, consectetur adipiscing elit.");
             row.Cells.Add("Lorem ipsum dolor sit amet, consectetur adipiscing elit.");
             row.Cells.Add("Lorem ipsum dolor sit amet, consectetur adipiscing elit.");
-            row.Cells.Add("Lorem ipsum dolor sit amet, consectetur adipiscing elit.");
-            row.Cells.Add("Lorem ipsum dolor sit amet, consectetur adipiscing elit.");
-            row.Cells.Add("Lorem ipsum dolor sit amet, consectetur adipiscing elit.");
-            row.Cells.Add("Lorem ipsum dolor sit amet, consectetur adipiscing elit.");
-            row.Cells.Add("Lorem ipsum dolor sit amet, consectetur adipiscing elit.");
-            row.Cells.Add("Lorem ipsum dolor sit amet, consectetur adipiscing elit.");
-            row.Cells.Add("Lorem ipsum dolor sit amet, consectetur adipiscing elit.");
+
+
+            row.Cells.Add(table1);
         }
     }
 }
