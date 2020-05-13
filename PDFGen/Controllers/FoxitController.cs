@@ -1,8 +1,7 @@
-﻿using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-using foxit.common;
-using foxit.pdf;
+﻿using System.Web.Http;
+using Foxit.PDF;
+using Foxit.PDF.Merger;
+using Foxit.PDF.PageElements;
 
 namespace PDFGen.Controllers
 {
@@ -10,30 +9,44 @@ namespace PDFGen.Controllers
     public class FoxitController : ApiController
     {
         [Route("foxit")]
-        public HttpResponseMessage Get()
+        public void Get()
         {
             //https://developers.foxitsoftware.com/kb/article/developer-guide-foxit-pdf-sdk-net/#getting-started
-            
-            const string sn = "heN3fJ2eE24gHop/NqBTmCrvkmAquENF6ph2NwYe+lmIKLxUIKdstw==";
-            const string key = "8f0YFcOJvRsN+ndWh5Aln+yqs1AphKdVQIGRHjWyxmE4r/x3UJEjGpdwLKOHw8scymkOcx77m5PvgeEtZfTag24wAeC50RTRbcVXRiSJ1+FdAFfTZfGt+ItinVegb8j3Qtm65Q4vsPFkH+qSvUgkyOD4xFoaVMcpuDWcGtILwV/zK/G2XOU6Brk90xY2+w+adL/I2nhxU5IU9W/a0OUlZOoVVmEwPUQWqUOUZJUyr0/7gOXjC4ejLPTzuBTWA05vPPzjif6G7k8UgIuBXiIYwUXKsJHgCktFHOxxCS0S/ba3YtHKpHh4bOXM15wsVFfWGK5HFukUhONn86FKAz1FdN/oBmLK4NRCnHpT6tPkDjOX6yirzJpBt6L8mmMtuLvSjTsGbx3OEKWPXEEqAJPKmVMvhzPoxJd8aMz4oZi13gNrVcQtuaNSBCYpN8DX0IWGGSQUgRBmKVpbVex5kcsGs7aiwVtZIwtaLpl4Gtzr3JlZ1S1Rfr5eHCLZzCO6OH87mFsadwUj4ppYyw4S5dMwznmiwoxnmF2g6KCDcUmYSyaWWJ3z60vcKbk4pY9ivLcIjOi2H+cwlqQBYRoyU8JrX2qNGmbj7Fz8yNcgIlc6JgYHV5JAaoCl+F56GKIBKZplFgH2+EYg/0ph46LBVLUTPxVeZWIwIhoKGb7z9ZfTuOz+brANLV4p98Maij0z8v1P8W1N7iR+BP1KbbXsOfajtPVu2t4YgSgtrk2rj9CLhnJAnJKrvggSO1IH9WZ6gVm/ff5XEzdv4bQvNBW75G+vFgZWd7XOgPYcT7jW3iKZC0EaJxKN7YEmu0BmhRfzVNkfK7T5s8+KIL1+xslz805s+pwnH6u0VWzZwfTNINuDkUBxsXo2elRKr6mhKOqxcrst7lXk/AEsHwhc+P8dPhuItgkVA7jhozsNkyyx5qTlg+QTFsaZRDMAIsYYQS/Km0ySvY3e3lKrg5LuhIE54cUqoeGd8PjXA9yKrbDTfmFLkYjlogPG+A1aHk48C1PqCu7JaC8dH1lw7Z/A5MiyMq1Mlp/Y9b0ZfOWZO9/Weu4ChURkduSI3Xr6Q6S5VRrUhLfX6/Lg/P3V9K9c4LQ8QNQjQDjUZ2pDDvqn+94JQO0e1ld0IGj+u68CB1fw99Cp5o/PuDY9TwLIb1Vhcsw8x4YE/cXCLg8qNl2eH8jjdz1eXwzubIatg16QHzcPMOGHNp/beMW3xzCMhIl7O8tzgZqTXl7+60e3MVWrAIe/0izRQwcVFIiI/Nbvije/Dr4AcJyAssFOQsGmpb15/0VQBF6YMvqtM3OJJV0MTMD/zbcd";
-
-            var errorCode = Library.Initialize(sn, key);
-
-            if (errorCode != ErrorCode.e_ErrSuccess)
+            var document = new MergeDocument(@"E:\RicardoSaracino\Projects\PDFGen\PDFGen\App_Data\0875.pdf")
             {
-                return new HttpResponseMessage(HttpStatusCode.InternalServerError);
-            }
-            
-            var doc = new PDFDoc(@"E:\RicardoSaracino\Projects\PDFGen\PDFGen\App_Data\0875.pdf");
+                Creator = "CSC-SCC", Author = "eSOR API", Title = "0875-51000-20200421-01"
+            };
 
-            errorCode = doc.LoadW("");
-            
-            if (errorCode != ErrorCode.e_ErrSuccess)
-            {
-                return new HttpResponseMessage(HttpStatusCode.InternalServerError);
-            }
+            var page = document.Pages[0];
+            page.Dimensions.SetMargins(30, 38, 35, 48);
 
-            return new HttpResponseMessage(HttpStatusCode.OK);
+            // Tracking No
+            page.Elements.Add(new Label("0875-51000-20200421-01", 460, 89, -1, 32, Font.Courier, 10));
+
+            // Institution
+            page.Elements.Add(new Label("Lorem ipsum dolor sit amet, consectetur adipiscing elit.", 0, 132, 150, 32,
+                Font.Courier, 10));
+
+            // Subject
+            page.Elements.Add(new Label(
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sit amet hendrerit eros. Vestibulum condimentum, sem at rutrum volutpat, ex orci efficitur libero, ac feugiat nisi mauris vel odio. Sed tristique eros ut odio facilisis, vel aliquet tellus tempus. Integer scelerisque tellus at congue malesuada. Nam sed facilisis erat. Cras sed vulputate lectus. Praesent non mollis risus. Integer ac lorem at nibh fermentum volutpat. Aliquam at ligula est. Sed interdum sodales sem, sed vulputate sapien tempus vitae.",
+                0, 177, 360, 32, Font.Courier, 10));
+
+            // Statement
+            page.Elements.Add(new Label(
+                @"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sit amet hendrerit eros. Vestibulum condimentum, sem at rutrum volutpat, ex orci efficitur libero, ac feugiat nisi mauris vel odio. Sed tristique eros ut odio facilisis, vel aliquet tellus tempus. Integer scelerisque tellus at congue malesuada. Nam sed facilisis erat. Cras sed vulputate lectus. Praesent non mollis risus. Integer ac lorem at nibh fermentum volutpat. Aliquam at ligula est. Sed interdum sodales sem, sed vulputate sapien tempus vitae.
+In a turpis sapien. Donec ut ipsum mi. Praesent vel suscipit erat. Donec ut pretium nibh. Praesent quis elit a tellus pharetra ornare. Nullam tempor egestas dui, sit amet facilisis libero auctor non. Nullam iaculis vehicula lorem eleifend placerat. Mauris vitae augue ex. Mauris ultricies id nisi ornare auctor. Etiam fringilla tellus ante, in maximus tellus sodales vel. Suspendisse eu varius nunc.
+Donec et lacus ut augue scelerisque auctor. Morbi nibh nibh, gravida id accumsan ut, gravida nec enim. Nullam pellentesque quam at scelerisque lacinia. Aliquam cursus pharetra diam in viverra. Sed suscipit rhoncus magna, vel accumsan neque volutpat non. Suspendisse eu enim ex. Fusce nec sapien vitae elit interdum cursus sit amet dignissim nunc. Proin rhoncus commodo turpis, non elementum tellus. Nam molestie arcu eu sem scelerisque pulvinar. Nam semper iaculis arcu, sed sagittis nibh sodales quis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer rhoncus neque non dapibus blandit. Sed eget dolor libero.
+Nullam quis nibh urna. Fusce porttitor volutpat ex ac sodales. Vestibulum bibendum fringilla augue a ullamcorper. Duis non posuere justo. Donec id massa sit amet sem euismod suscipit. Fusce porta dolor non massa semper, quis vestibulum sem euismod. Nam lectus erat, lobortis tincidunt ipsum non, sagittis tempor nisl. Maecenas at aliquam urna. Mauris elementum, quam ut ultricies cursus, augue dolor maximus dui, a sodales ipsum lectus a diam. Fusce quis tellus ac dolor mattis consequat rhoncus et lorem.
+Ut a varius dui. Vestibulum feugiat velit est, sit amet vulputate lorem mattis ut. Maecenas dignissim vel arcu ac mattis. Quisque congue sodales erat semper laoreet. Donec eget nibh elit. Duis elit lorem, blandit vel vulputate ut, laoreet eu risus. Nulla facilisi. Vivamus faucibus leo ut erat vehicula, id commodo tortor vulputate. Cras in eros vitae magna efficitur consequat sit amet at lorem.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sit amet hendrerit eros. Vestibulum condimentum, sem at rutrum volutpat, ex orci efficitur libero, ac feugiat nisi mauris vel odio. Sed tristique eros ut odio facilisis, vel aliquet tellus tempus. Integer scelerisque tellus at congue malesuada. Nam sed facilisis erat. Cras sed vulputate lectus. Praesent non mollis risus. Integer ac lorem at nibh fermentum volutpat. Aliquam at ligula est. Sed interdum sodales sem, sed vulputate sapien tempus vitae.
+In a turpis sapien. Donec ut ipsum mi. Praesent vel suscipit erat. Donec ut pretium nibh. Praesent quis elit a tellus pharetra ornare. Nullam tempor egestas dui, sit amet facilisis libero auctor non. Nullam iaculis vehicula lorem eleifend placerat. Mauris vitae augue ex. Mauris ultricies id nisi ornare auctor. Etiam fringilla tellus ante, in maximus tellus sodales vel. Suspendisse eu varius nunc.
+Donec et lacus ut augue scelerisque auctor. Morbi nibh nibh, gravida id accumsan ut, gravida nec enim. Nullam pellentesque quam at scelerisque lacinia. Aliquam cursus pharetra diam in viverra. Sed suscipit rhoncus magna, vel accumsan neque volutpat non. Suspendisse eu enim ex. Fusce nec sapien vitae elit interdum cursus sit amet dignissim nunc. Proin rhoncus commodo turpis, non elementum tellus. Nam molestie arcu eu sem scelerisque pulvinar. Nam semper iaculis arcu, sed sagittis nibh sodales quis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer rhoncus neque non dapibus blandit. Sed eget dolor libero.
+Nullam quis nibh urna. Fusce porttitor volutpat ex ac sodales. Vestibulum bibendum fringilla augue a ullamcorper. Duis non posuere justo. Donec id massa sit amet sem euismod suscipit. Fusce porta dolor non massa semper, quis vestibulum sem euismod. Nam lectus erat, lobortis tincidunt ipsum non, sagittis tempor nisl. Maecenas at aliquam urna. Mauris elementum, quam ut ultricies cursus, augue dolor maximus dui, a sodales ipsum lectus a diam. Fusce quis tellus ac dolor mattis consequat rhoncus et lorem.
+Ut a varius dui. Vestibulum feugiat velit est, sit amet vulputate lorem mattis ut. Maecenas dignissim vel arcu ac mattis. Quisque congue sodales erat semper laoreet. Donec eget nibh elit. Duis elit lorem, blandit vel vulputate ut, laoreet eu risus. Nulla facilisi. Vivamus faucibus leo ut erat vehicula, id commodo tortor vulputate. Cras in eros vitae magna efficitur consequat sit amet at lorem."
+                , 0, 220, 540, 500, Font.Courier, 10));
+
+            document.DrawToWeb("0875-20200511.pdf");
         }
     }
 }

@@ -50,8 +50,7 @@ namespace PDFGen.Controllers
 
                 pdf = oms.ToArray();
             }
-
-
+            
             var response = new HttpResponseMessage(HttpStatusCode.OK) {Content = new ByteArrayContent(pdf)};
             response.Content.Headers.ContentDisposition =
                 new ContentDispositionHeaderValue("inline") {FileName = "template.pdf"};
